@@ -16,12 +16,12 @@ function readMovies(callback) {
     });
 }
 
-// Write data to JSON file
+//write data from the file json step
 function writeMovies(movies, callback) {
     fs.writeFile(FILE, JSON.stringify(movies, null, 2), callback);
 }
 
-// Send JSON response
+
 function sendResponse(res, statusCode, data) {
     res.writeHead(statusCode, { "Content-Type": "application/json" });
     res.end(JSON.stringify(data));
@@ -31,14 +31,14 @@ const server = http.createServer((req, res) => {
     const urlParts = req.url.split("/");
     const id = parseInt(urlParts[2]);
 
-    // GET /movies  -> get all movies
+    
     if (req.method === "GET" && req.url === "/movies") {
         readMovies(movies => {
             sendResponse(res, 200, movies);
         });
     }
 
-    // GET /movies/:id -> get one movie
+    
     else if (req.method === "GET" && urlParts[1] === "movies" && id) {
         readMovies(movies => {
             const movie = movies.find(m => m.id === id);
@@ -50,7 +50,7 @@ const server = http.createServer((req, res) => {
         });
     }
 
-    // POST /movies -> add movie
+    
     else if (req.method === "POST" && req.url === "/movies") {
         let body = "";
 
@@ -78,7 +78,7 @@ const server = http.createServer((req, res) => {
         });
     }
 
-    // PUT /movies/:id -> update movie
+    
     else if (req.method === "PUT" && urlParts[1] === "movies" && id) {
         let body = "";
 
@@ -113,7 +113,7 @@ const server = http.createServer((req, res) => {
         });
     }
 
-    // DELETE /movies/:id
+
     else if (req.method === "DELETE" && urlParts[1] === "movies" && id) {
 
         readMovies(movies => {
@@ -133,7 +133,7 @@ const server = http.createServer((req, res) => {
         });
     }
 
-    // Invalid route
+    
     else {
         sendResponse(res, 404, {
             message: "Route not found"
